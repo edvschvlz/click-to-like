@@ -3,21 +3,25 @@ import './index.css';
 
 function Home() {
   const [times, setTimes] = useState(0);
+  const [delayed, setDelayed] = useState(0);
   const heart = document.getElementsByClassName('heart');
 
-  function increment(e) {
+  async function increment(e) {
     let xValue = e.clientX - e.target.offsetLeft,
       yValue = e.clientY - e.target.offsetTop;
 
     heart[0].style.left = `${xValue}px`;
     heart[0].style.top = `${yValue}px`;
 
-    heart[0].classList.add('active');
-    setTimes(times + 1);
+    if (delayed === 0 || new Date().getTime() - delayed > 800) {
+      heart[0].classList.add('active');
+      setTimes(times + 1);
+      setDelayed(new Date().getTime());
 
-    setTimeout(() => {
-      heart[0].classList.remove('active');
-    }, 2000);
+      setTimeout(() => {
+        heart[0].classList.remove('active');
+      }, 800);
+    }
   }
 
   return (
